@@ -57,3 +57,4 @@ docs/_build/
 
 # Ignorar todo el contenido de master
 pg-setup/data/master/*
+backend/src/log.txt
