@@ -1,0 +1,60 @@
+# Variables de entorno
+.env
+*.env
+.env.local
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+venv*/
+env*/
+.venv*/
+pythonenv/
+
+# Archivos de configuración de entornos virtuales
+pyvenv.cfg
+
+# Archivos generados por Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Archivos de desarrollo
+.idea/
+.vscode/
+*.code-workspace
+
+# Archivos de base de datos
+*.db
+*.sqlite3
+*.dump
+
+# Archivos temporales
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de Jupyter
+.ipynb_checkpoints/
+
+# Archivos de test
+.coverage
+htmlcov/
+.tox/
+
+# Archivos de documentación
+docs/_build/
+
+# Ignorar todo el contenido de master excepto pg_hba.conf
+pg-setup/data/master/*
+!pg-setup/data/master/pg_hba.conf

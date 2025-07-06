@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  master:
+    image: postgres:17
+    container_name: pg-master
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+      - ./data/master:/var/lib/postgresql/data
+      - ./config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+    networks:
+      - pgnet
+
+  replica:
+    image: postgres:17
+    container_name: pg-replica
+    user: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5435:5432"
+    networks:
+      - pgnet
+    depends_on:
+      - master
+    entrypoint: >
+      bash -c "
+        until pg_isready -h master -p 5432; do sleep 1; done;
+        export PGPASSWORD=${POSTGRES_PASSWORD} &&
+        rm -rf /var/lib/postgresql/data/* &&
+        pg_basebackup -h master -p 5432 -D /var/lib/postgresql/data -U ${POSTGRES_USER} -Fp -Xs -P -R &&
+        echo \"primary_conninfo = 'host=master port=5432 user=${POSTGRES_USER} password=${POSTGRES_PASSWORD}'\" >> /var/lib/postgresql/data/postgresql.auto.conf &&
+        touch /var/lib/postgresql/data/standby.signal &&
+        chown -R postgres:postgres /var/lib/postgresql/data &&
+        chmod 0700 /var/lib/postgresql/data &&
+        exec postgres
+      "
+
+  pgpool:
+    image: bitnami/pgpool:latest
+    container_name: pgpool
+    ports:
+      - "9999:5432"
+    environment:
+      - PGPOOL_BACKEND_NODES=0:master:5432,1:replica:5432
+      - PGPOOL_BACKEND_WEIGHT_LIST=0:0,1:1
+      - PGPOOL_ENABLE_LOAD_BALANCING=yes
+      - PGPOOL_POSTGRES_USERNAME=${POSTGRES_USER}
+      - PGPOOL_POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGPOOL_SR_CHECK_USER=${POSTGRES_USER}
+      - PGPOOL_SR_CHECK_PASSWORD=${POSTGRES_PASSWORD}
+      - PGPOOL_ADMIN_USERNAME=admin
+      - PGPOOL_ADMIN_PASSWORD=admin123
+    depends_on:
+      - master
+      - replica
+    networks:
+      - pgnet
+
+  mongo:  
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo123
+      MONGO_INITDB_DATABASE: meli_db
+    networks:
+      - pgnet
+    volumes:
+      - mongodata:/data/db
+      - ./init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - pgnet
+    volumes:
+      - redisdata:/data
+
+volumes:
+  redisdata:
+  mongodata:
+
+networks:
+  pgnet:
+    driver: bridge

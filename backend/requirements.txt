@@ -1,0 +1,23 @@
+# Core
+fastapi
+uvicorn
+python-dotenv
+
+# Base de datos - PostgreSQL
+sqlalchemy
+psycopg2-binary
+asyncpg
+
+# Base de datos - MongoDB
+pymongo
+motor
+
+# Base de datos - Redis
+redis
+
+# Validación y modelos
+pydantic
+
+# Utilidades
+python-multipart
+typing-extensions
