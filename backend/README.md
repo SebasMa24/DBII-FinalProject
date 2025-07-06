@@ -13,14 +13,18 @@ Este directorio contiene la lógica principal del backend del proyecto **DBII-Fi
 - `log.txt` - Archivo de salida del sistema de logs.
 
 ## ▶️ Ejecución
-
-1. Crear un entorno virtual:
+1. Ubicarse en la carpeta src del proyecto:
+   ```bash
+   cd ..\Github\DBII-FinalProject\backend\src
+2. Crear un entorno virtual y activarlo:
    ```bash
    python -m venv venv
    source venv/bin/activate  # En Windows: venv\Scripts\activate
 
-2. Instalar dependencias
+3. Instalar dependencias
    pip install -r requirements.txt
 
-3. Ejecutar la Aplicación
+6. Crear archivo .env siguiendo el .env.example
+
+5. Ejecutar la Aplicación
    python -m uvicorn main:app --reload
