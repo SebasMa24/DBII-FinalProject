@@ -55,6 +55,5 @@ htmlcov/
 # Archivos de documentación
 docs/_build/
 
-# Ignorar todo el contenido de master excepto pg_hba.conf
+# Ignorar todo el contenido de master
 pg-setup/data/master/*
-!pg-setup/data/master/pg_hba.conf

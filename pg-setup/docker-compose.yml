@@ -13,7 +13,8 @@ services:
     volumes:
       - ./init:/docker-entrypoint-initdb.d
       - ./data/master:/var/lib/postgresql/data
-      - ./config/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./config:/etc/postgresql
+    command: postgres -c hba_file=/etc/postgresql/pg_hba.conf
     networks:
       - pgnet
 
