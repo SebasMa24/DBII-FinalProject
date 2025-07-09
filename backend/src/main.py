@@ -108,6 +108,7 @@ async def log_requests(request: Request, call_next):
 
 @app.get("/popular-products", tags=["Cache"])
 def get_popular_products(region: str = Query(...)):
+    start_time = time.time()
     cache_key = f"popular_products:{region}"
 
     if redis_pool.key_exists(cache_key):
@@ -165,7 +166,8 @@ def get_popular_products(region: str = Query(...)):
 
     redis_pool.set_value(cache_key, result_with_images, ttl=86400)
     redis_pool.set_value(f"{cache_key}:timestamp", datetime.now().isoformat(), ttl=86400)
-
+    duration = time.time() - start_time
+    print(f"Query executed in {duration:.4f} seconds")
     return {
         "source": "postgresql",
         "cached_at": datetime.now().isoformat(),
@@ -175,13 +177,17 @@ def get_popular_products(region: str = Query(...)):
 
 @app.delete("/cache/popular-products", tags=["Cache"])
 def clear_popular_cache():
+    start_time = time.time()
     cache_key = f"popular_products"
     redis_pool.delete("popular_products")
     redis_pool.delete(f"{cache_key}:timestamp")
+    duration = time.time() - start_time
+    print(f"Query executed in {duration:.4f} seconds")
     return {"message": f"Caché eliminado para la todas las regiones"}
 
 @app.post("/users/", response_model=UserResponse, tags=["Users"])
 def create_user(user: UserCreate):
+    start_time = time.time()
     try:
         from datetime import datetime
         birthday = datetime.strptime(user.birthday, "%Y-%m-%d")
@@ -211,14 +217,19 @@ def create_user(user: UserCreate):
             created_at=created_at
         )
     except ValueError as e:
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 @app.post("/addresses/", response_model=AddressResponse, tags=["Addresses"])
 def create_address(address: AddressCreate):
+    start_time = time.time()
     try:
         # Verificar que el usuario existe en la región
         user = postgres_adapter.get_by_id("usermanagement.users", address.user_id)
@@ -244,12 +255,17 @@ def create_address(address: AddressCreate):
             table="usermanagement.address",
             id=address_id
         )
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         return AddressResponse(**new_address)
     except Exception as e:
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 @app.get("/users/{user_id}/addresses", response_model=List[AddressResponse], tags=["Users"])
 def get_user_addresses(user_id: int, region: str):
+    start_time = time.time()
     try:
         # Verificar que el usuario existe y pertenece a la región
         user = postgres_adapter.get_by_id("usermanagement.users", user_id)
@@ -267,12 +283,17 @@ def get_user_addresses(user_id: int, region: str):
             query,
             {"user_id": user_id, "region": region}
         )
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         return [AddressResponse(**addr) for addr in addresses]
     except Exception as e:
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 @app.get("/addresses/{address_id}", response_model=AddressResponse, tags=["Addresses"])
 def get_address(address_id: int, region: str):
+    start_time = time.time()
     try:
         address = postgres_adapter.get_by_id(
             table="usermanagement.address",
@@ -285,12 +306,17 @@ def get_address(address_id: int, region: str):
                 status_code=404,
                 detail="Address not found in the specified region"
             )
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         return AddressResponse(**address)
     except Exception as e:
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
     
 @app.get("/stores/{store_id}", response_model=StoreResponse, tags=["Stores"])
 def get_store(store_id: int, region: str):
+    start_time = time.time()
     try:
         store = postgres_adapter.get_by_id_with_region(
             table="sellermanagement.stores",
@@ -298,16 +324,25 @@ def get_store(store_id: int, region: str):
             region=region
         )
         if not store:
+            duration = time.time() - start_time
+            print(f"Query executed in {duration:.4f} seconds")
             raise HTTPException(status_code=404, detail="Store not found in the specified region")
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         return StoreResponse(**store)
 
     except HTTPException:
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         raise
     except Exception as e:
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
     
 @app.get("/stores/{store_id}/products", response_model=List[ProductBase], tags=["Stores"])
 def get_store_products(store_id: int, region: str, page: int = 1, per_page: int = 20):
+    start_time = time.time()
     try:
         offset = (page - 1) * per_page
         query = """
@@ -327,8 +362,12 @@ def get_store_products(store_id: int, region: str, page: int = 1, per_page: int 
                 "offset": offset
             }
         )
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         return [ProductBase(**prod) for prod in products]
     except Exception as e:
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         raise HTTPException(
             status_code=500, 
             detail=f"Database error: {str(e)}"
@@ -401,6 +440,7 @@ def get_user_orders(user_id: int, region: str, status: Optional[str] = None, pag
 
 @app.get("/stores/{store_id}/orders", response_model=List[OrderResponse], tags=["Stores"])
 def get_store_orders(store_id: int, region: str, period: str = "30d", page: int = 1, per_page: int = 20):
+    start_time = time.time()
     try:
         # Verificar que la tienda existe en la región
         store = postgres_adapter.get_by_id("sellermanagement.stores", store_id)
@@ -447,8 +487,12 @@ def get_store_orders(store_id: int, region: str, period: str = "30d", page: int 
                 "offset": offset
             }
         )
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         return [OrderResponse(**order) for order in orders]
     except Exception as e:
+        duration = time.time() - start_time
+        print(f"Query executed in {duration:.4f} seconds")
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 @app.get("/products/categories/", response_model=List[CategoryResponse], tags=["Products"])
