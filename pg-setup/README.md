@@ -27,11 +27,11 @@ Este directorio contiene la configuración necesaria para levantar el entorno co
    REDIS: localhost:6379
 
 4. Insertar data sintetica Disponible en [Google Drive](https://drive.google.com/drive/folders/1jUZXU4HzO4oqksMzTFWZDLdHYX4m4Yew?usp=drive_link),en el siguiente orden:
-   Users (No considerar id ni created_at al importar)
-   Address (No considerar id al importar)
-   Stores
-   Products
-   Orders
-   OrderDetails
-   Shipments
-   Payments
+   - Users (No considerar id ni created_at al importar)
+   - Address (No considerar id al importar)
+   - Stores (No considerar id, ni isOfficial al importar)
+   - Products (No considerar id al importar)
+   - Orders (No considerar id al importar)
+   - OrderDetails (No considerar id al importar)
+   - Shipments (No considerar id al importar)
+   - Payments (No considerar id al importar)
