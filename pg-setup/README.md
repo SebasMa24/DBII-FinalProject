@@ -1,9 +1,5 @@
-
----
-
 ### 📁 `pg-setup/README.md`
 
-```markdown
 # 🐘 PostgreSQL Setup - DBII Final Project
 
 Este directorio contiene la configuración necesaria para levantar el entorno completo de la arquitectura de la base de datos con balanceo de carga utilizando **Pgpool-II**, para la base de datos relacional **PostgreSQL**, ideal para entornos de desarrollo y pruebas,  bases de datos no relacionales como **MongoDB** y un servidor de cache **REDIS**.
@@ -29,3 +25,13 @@ Este directorio contiene la configuración necesaria para levantar el entorno co
    Pgpool-II: localhost:9999 (balanceador de carga)
    MongoDB:  localhost:27018
    REDIS: localhost:6379
+
+4. Insertar data sintetica Disponible en [Google Drive](https://drive.google.com/drive/folders/1jUZXU4HzO4oqksMzTFWZDLdHYX4m4Yew?usp=drive_link),en el siguiente orden:
+   Users (No considerar id ni created_at al importar)
+   Address (No considerar id al importar)
+   Stores
+   Products
+   Orders
+   OrderDetails
+   Shipments
+   Payments
