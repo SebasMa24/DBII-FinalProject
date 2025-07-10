@@ -1,30 +1,38 @@
 # 📦 Backend - DBII Final Project
 
-Este directorio contiene la lógica principal del backend del proyecto **DBII-FinalProject**, desarrollado en Python con FastAPI, empleando una arquitectura modular y desacoplada para facilitar la integración con diferentes bases de datos (PostgreSQL, MongoDB, Redis).
+This directory contains the core backend logic of the **DBII-FinalProject**, developed in Python with FastAPI, using a modular and decoupled architecture to enable integration with multiple databases (PostgreSQL, MongoDB, Redis).
 
-## 📂 Estructura del Proyecto
+## 📂 Project Structure
 
-- `config/` - Archivos de configuración general del sistema (p. ej. variables de entorno).
-- `database/` - Contiene los adaptadores de conexión para PostgreSQL, MongoDB y Redis, así como la clase base para estandarizar las operaciones.
-- `models/` - Definición de los modelos de datos utilizados en las peticiones y respuestas.
-- `utils/` - Funciones utilitarias como el sistema de logging (`logger.py`).
-- `main.py` - Punto de entrada de la aplicación FastAPI.
-- `.env` - Archivo de configuración con variables de entorno (por ejemplo, credenciales y URLs de bases de datos).
-- `log.txt` - Archivo de salida del sistema de logs.
+- `config/` - General system configuration files (e.g., environment variables).
+- `database/` - Contains connection adapters for PostgreSQL, MongoDB, and Redis, as well as a base class to standardize operations.
+- `models/` - Data model definitions used for requests and responses.
+- `utils/` - Utility functions such as the logging system (`logger.py`).
+- `main.py` - Entry point of the FastAPI application.
+- `.env` - Configuration file with environment variables (e.g., database credentials and URLs).
+- `log.txt` - Output file for the logging system.
 
-## ▶️ Ejecución
-1. Ubicarse en la carpeta src del proyecto:
+## ▶️ Running the Application
+
+1. Navigate to the `src` folder of the project:
    ```bash
    cd ..\Github\DBII-FinalProject\backend\src
-2. Crear un entorno virtual y activarlo:
+   ```
+
+2. Create and activate a virtual environment:
    ```bash
    python -m venv venv
-   source venv/bin/activate  # En Windows: venv\Scripts\activate
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-3. Instalar dependencias
+3. Install dependencies:
+   ```bash
    pip install -r requirements.txt
+   ```
 
-6. Crear archivo .env siguiendo el .env.example
+4. Create the `.env` file based on `.env.example`.
 
-5. Ejecutar la Aplicación
+5. Run the application:
+   ```bash
    python -m uvicorn main:app --reload
+   ```

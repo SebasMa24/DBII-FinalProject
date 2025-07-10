@@ -3,6 +3,48 @@ from datetime import datetime
 from typing import Optional, List
 from datetime import date
 
+"""
+Response Models for E-commerce API
+
+These Pydantic models define the structure of the API responses returned by various 
+endpoints in the e-commerce system. Each model corresponds to a specific entity such 
+as user, address, product, store, order, shipment, payment, etc.
+
+Note:
+Due to time constraints during development, most of these models were used in a limited 
+manner—primarily for response serialization. Some nested fields were simplified and 
+may not reflect the full depth of relationships or validation logic.
+
+Shared Characteristics:
+- All timestamps are returned in ISO 8601 format.
+- All entities include a `region` field for partitioned multi-region support.
+- Nested models (e.g., ProductResponse) include simplified submodels such as 
+  CategoryResponse and StoreResponse.
+
+Models Overview:
+----------------
+
+- `UserResponse`: Basic user info (id, name, email, region, created_at).
+- `AddressResponse`: User address with location details.
+- `StoreResponse`: Seller store info (simplified).
+- `ProductResponse`: Product details including category, store, images, discounts, reviews.
+- `CategoryResponse`: Product category metadata.
+- `ImageResponse`: Product image metadata.
+- `DiscountResponse`: Active discount applied to a product.
+- `ReviewStatsResponse`: Aggregated review data (average, count).
+- `QuestionResponse` and `AnswerResponse`: Q&A system models.
+- `OrderResponse` and `OrderDetailResponse`: Order and itemized order detail.
+- `ShipmentResponse`: Shipment tracking info.
+- `PaymentResponse`: Payment metadata and status.
+- `SearchHistoryResponse`: User search history (for analytics).
+- `CampaignResponse` and `AdResponse`: Advertising and campaign data.
+- `ProductBase`: Base structure used for product-related models.
+
+Recommendation:
+These models can be further extended for input validation, ORM integration, or 
+OpenAPI documentation. For a production system, consider modularizing models 
+(by domain) and enforcing stricter typing/validation rules.
+"""
 
 class UserResponse(BaseModel):
     id: int

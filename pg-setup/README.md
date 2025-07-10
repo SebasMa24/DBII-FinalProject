@@ -2,36 +2,39 @@
 
 # 🐘 PostgreSQL Setup - DBII Final Project
 
-Este directorio contiene la configuración necesaria para levantar el entorno completo de la arquitectura de la base de datos con balanceo de carga utilizando **Pgpool-II**, para la base de datos relacional **PostgreSQL**, ideal para entornos de desarrollo y pruebas,  bases de datos no relacionales como **MongoDB** y un servidor de cache **REDIS**.
+This directory contains the necessary configuration to launch the complete database architecture environment with load balancing using **Pgpool-II**, for the relational database **PostgreSQL**. It is ideal for development and testing environments and includes non-relational databases like **MongoDB** and a **Redis** cache server.
 
-## 📂 Estructura
+## 📂 Structure
 
-- `data/` - Carpetas de persistencia de datos para los contenedores PostgreSQL (`master/`) y Pgpool (`pgpool/`).
-- `mongo-init/` - Ejecuta automaticamente un script JS para la creación de las colecciones.
-- `docker-compose.yml` - Archivo principal de orquestación para levantar los servicios de base de datos con Docker Compose.
-- `.env` - Archivo con variables de entorno necesarias para configurar los contenedores.
+- `data/` - Persistent data directories for the PostgreSQL containers (`master/`) and Pgpool (`pgpool/`).
+- `mongo-init/` - Automatically runs a JS script to create collections.
+- `docker-compose.yml` - Main orchestration file to launch the database services using Docker Compose.
+- `.env` - Environment variables file required to configure the containers.
 
-## ▶️ Instrucciones para levantar el entorno
+## ▶️ Instructions to launch the environment
 
-1. Navegar al directorio raíz del proyecto:
+1. Navigate to the root directory of the project:
    ```bash
    cd pg-setup
+   ```
 
-2. Levantar los contenedores
+2. Launch the containers:
+   ```bash
    docker-compose up -d
+   ```
 
-3. Verificar servicios:
-   PostgreSQL Master: localhost:5432
-   Pgpool-II: localhost:9999 (balanceador de carga)
-   MongoDB:  localhost:27018
-   REDIS: localhost:6379
+3. Verify services:
+   - PostgreSQL Master: localhost:5432  
+   - Pgpool-II: localhost:9999 (load balancer)  
+   - MongoDB: localhost:27018  
+   - REDIS: localhost:6379  
 
-4. Insertar data sintetica Disponible en [Google Drive](https://drive.google.com/drive/folders/1jUZXU4HzO4oqksMzTFWZDLdHYX4m4Yew?usp=drive_link),en el siguiente orden:
-   - Users (No considerar id ni created_at al importar)
-   - Address (No considerar id al importar)
-   - Stores (No considerar id, ni isOfficial al importar)
-   - Products (No considerar id al importar)
-   - Orders (No considerar id al importar)
-   - OrderDetails (No considerar id al importar)
-   - Shipments (No considerar id al importar)
-   - Payments (No considerar id al importar)
+4. Insert synthetic data available at [Google Drive](https://drive.google.com/drive/folders/1jUZXU4HzO4oqksMzTFWZDLdHYX4m4Yew?usp=drive_link), in the following order:
+   - Users (Do not include `id` or `created_at` during import)
+   - Address (Do not include `id` during import)
+   - Stores (Do not include `id` or `isOfficial` during import)
+   - Products (Do not include `id` during import)
+   - Orders (Do not include `id` during import)
+   - OrderDetails (Do not include `id` during import)
+   - Shipments (Do not include `id` during import)
+   - Payments (Do not include `id` during import)

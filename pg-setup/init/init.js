@@ -17,3 +17,14 @@ collections.forEach(name => {
     print(`ℹColección '${name}' ya existe.`);
   }
 });
+
+
+
+db.conversations.createIndex({ region: 1 });
+db.conversations.createIndex({ order_id: 1 });
+db.conversations.createIndex({ store_id: 1 });
+db.conversations.createIndex({ user_id: 1 });
+
+db.products.createIndex({ region: 1 });
+
+db.user_search_history.createIndex({ region: 1 });
