@@ -11,7 +11,7 @@ const collections = [
 
 collections.forEach(name => {
   if (!db.getCollectionNames().includes(name)) {
-    db.createCollection(name);
+    db.createCollection(name);                                                                                                                                      
     print(`Colección '${name}' creada.`);
   } else {
     print(`ℹColección '${name}' ya existe.`);
@@ -21,9 +21,9 @@ collections.forEach(name => {
 
 
 db.conversations.createIndex({ region: 1 });
-db.conversations.createIndex({ order_id: 1 });
+db.conversations.createIndex({ order_id: 1 });                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 db.conversations.createIndex({ store_id: 1 });
-db.conversations.createIndex({ user_id: 1 });
+db.conversations.createIndex({ user_id: 1 });                    
 
 db.products.createIndex({ region: 1 });
 
